@@ -1,0 +1,78 @@
+{
+  "name": "High Bandwidth Memory Stack",
+  "stackup": [
+    {
+      "material": "Si",
+      "thickness": 100e-6,
+      "power_map": "hbm_logic_die.csv",
+      "thermal_interface": false
+    },
+    {
+      "material": "Cu_TSV",
+      "thickness": 50e-6,
+      "power_map": "",
+      "thermal_interface": true
+    },
+    {
+      "material": "Si",
+      "thickness": 50e-6,
+      "power_map": "hbm_dram_die1.csv",
+      "thermal_interface": false
+    },
+    {
+      "material": "Cu_TSV",
+      "thickness": 50e-6,
+      "power_map": "",
+      "thermal_interface": true
+    },
+    {
+      "material": "Si",
+      "thickness": 50e-6,
+      "power_map": "hbm_dram_die2.csv",
+      "thermal_interface": false
+    },
+    {
+      "material": "Cu_TSV",
+      "thickness": 50e-6,
+      "power_map": "",
+      "thermal_interface": true
+    },
+    {
+      "material": "Si",
+      "thickness": 50e-6,
+      "power_map": "hbm_dram_die3.csv",
+      "thermal_interface": false
+    },
+    {
+      "material": "Cu_TSV",
+      "thickness": 50e-6,
+      "power_map": "",
+      "thermal_interface": true
+    },
+    {
+      "material": "Si",
+      "thickness": 50e-6,
+      "power_map": "hbm_dram_die4.csv",
+      "thermal_interface": false
+    },
+    {
+      "material": "SiO2",
+      "thickness": 20e-6,
+      "power_map": "",
+      "thermal_interface": true
+    }
+  ],
+  "boundary_conditions": {
+    "top": {"type": "convection", "h": 1e4},
+    "bottom": {"type": "constant_temp", "value": 343.15},
+    "sides": {"type": "adiabatic"}
+  },
+  "ambient_temp": 298.15,
+  "simulation_settings": {
+    "grid_resolution": 1e-6,
+    "time_step": 1e-7,
+    "convergence_threshold": 1e-4,
+    "max_iterations": 10000,
+    "output_interval": 100
+  }
+} 
