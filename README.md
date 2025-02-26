@@ -13,7 +13,7 @@ A CUDA-optimized thermal-mechanical simulator for 3D integrated circuits, design
 ---
 
 ## 📌 Overview  
-This project extends my [IEEE ICMLA-published protein folding work](#references) to semiconductor thermal analysis, achieving **42× speedup** over ANSYS Mechanical via CUDA-optimized finite element methods. Key innovations:  
+This project performs semiconductor thermal analysis, achieving **42× speedup** over ANSYS Mechanical via CUDA-optimized finite element methods. Key innovations:  
 - 🔥 **Multi-Physics Coupling**: Solves heat + stress equations concurrently using CUDA's **Unified Memory Model**  
 - 🧊 **TSMC 3DFabric™ Validation**: Simulates thermal warpage in chip-on-wafer stacks with <2% error vs experimental data  
 - 🚀 **NVIDIA cuLitho Integration**: Predicts lithography-induced stress hotspots using my Samsung R&D CI/CD optimization techniques  
