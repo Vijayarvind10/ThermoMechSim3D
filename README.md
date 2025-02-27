@@ -4,7 +4,7 @@
 [![CUDA](https://img.shields.io/badge/CUDA-12.2-%2376B900.svg?logo=nvidia)](https://developer.nvidia.com/cuda-toolkit)  
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.123456789.svg)](https://doi.org/10.5281/zenodo.123456789)  
 
-A CUDA-optimized thermal-mechanical simulator for 3D integrated circuits, designed to predict chip reliability under extreme workloads. Built by **Vijay Arvind Ramamoorthy** (UCSC MS CSE '25) to address DFX challenges in advanced packaging for NVIDIA Blackwell GPUs and TSMC 3DFabric™ systems.  
+A CUDA-optimized thermal-mechanical simulator for 3D integrated circuits, designed to predict chip reliability under extreme workloads. Built by **Vijay Arvind Ramamoorthy** (UCSC MS CSE '26) to address DFX challenges in advanced packaging for NVIDIA Blackwell GPUs and TSMC 3DFabric™ systems.  
 
 <p align="center">
   <img src="media/thermal_stress_demo.gif" alt="3D Thermal Stress Visualization">
