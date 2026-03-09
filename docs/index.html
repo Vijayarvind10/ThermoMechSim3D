@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ThermoMechSim3D - 3D-IC Thermal-Mechanical Simulator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔥</text></svg>">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header id="header">
+            <div class="header-left">
+                <h1>ThermoMechSim3D</h1>
+                <span class="subtitle">GPU-Accelerated 3D-IC Thermal-Mechanical Simulator</span>
+            </div>
+            <div class="header-right">
+                <span id="sim-status" class="status-badge status-idle">Idle</span>
+            </div>
+        </header>
+
+        <!-- Main Layout -->
+        <div id="main-layout">
+            <!-- Left Panel: Controls -->
+            <aside id="control-panel">
+                <!-- Preset Selector -->
+                <section class="panel-section">
+                    <h3>Configuration</h3>
+                    <label>Preset</label>
+                    <select id="preset-select">
+                        <option value="hbm_stack">HBM Memory Stack</option>
+                        <option value="logic_die">Logic Die (Single)</option>
+                        <option value="chiplet">2.5D Chiplet Package</option>
+                        <option value="custom">Custom</option>
+                    </select>
+                </section>
+
+                <!-- Grid Settings -->
+                <section class="panel-section">
+                    <h3>Grid Resolution</h3>
+                    <label>X Dimension</label>
+                    <input type="range" id="dim-x" min="16" max="128" value="48" step="8">
+                    <span class="range-value" id="dim-x-val">48</span>
+
+                    <label>Y Dimension</label>
+                    <input type="range" id="dim-y" min="16" max="128" value="48" step="8">
+                    <span class="range-value" id="dim-y-val">48</span>
+
+                    <label>Z Dimension (layers)</label>
+                    <input type="range" id="dim-z" min="8" max="64" value="24" step="4">
+                    <span class="range-value" id="dim-z-val">24</span>
+                </section>
+
+                <!-- Physics Parameters -->
+                <section class="panel-section">
+                    <h3>Physics</h3>
+                    <label>Total Power (W)</label>
+                    <input type="number" id="total-power" value="100" min="1" max="500" step="10">
+
+                    <label>Ambient Temperature (K)</label>
+                    <input type="number" id="ambient-temp" value="298.15" min="200" max="400" step="5">
+
+                    <label>Reference Temperature (K)</label>
+                    <input type="number" id="ref-temp" value="298.15" min="200" max="400" step="5">
+
+                    <label>Time Step (ns)</label>
+                    <input type="number" id="time-step" value="1" min="0.1" max="100" step="0.1">
+                </section>
+
+                <!-- Simulation Settings -->
+                <section class="panel-section">
+                    <h3>Simulation</h3>
+                    <label>Max Steps</label>
+                    <input type="number" id="max-steps" value="500" min="10" max="10000" step="50">
+
+                    <label>Convergence Threshold</label>
+                    <input type="number" id="convergence" value="0.01" min="0.0001" max="1" step="0.001">
+
+                    <label>Stress Threshold (MPa)</label>
+                    <input type="number" id="stress-threshold" value="100" min="1" max="1000" step="10">
+                </section>
+
+                <!-- Controls -->
+                <section class="panel-section controls-section">
+                    <button id="btn-run" class="btn btn-primary">Run Simulation</button>
+                    <button id="btn-stop" class="btn btn-danger" disabled>Stop</button>
+                    <button id="btn-reset" class="btn btn-secondary">Reset</button>
+                </section>
+
+                <!-- Progress -->
+                <section class="panel-section" id="progress-section" style="display:none;">
+                    <h3>Progress</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="progress-fill"></div>
+                    </div>
+                    <div class="progress-text" id="progress-text">0%</div>
+                    <div class="progress-detail" id="progress-detail"></div>
+                </section>
+            </aside>
+
+            <!-- Center: 3D Viewport -->
+            <main id="viewport-container">
+                <div id="viewport">
+                    <canvas id="render-canvas"></canvas>
+                </div>
+                <!-- Visualization Controls -->
+                <div id="viz-controls">
+                    <div class="viz-group">
+                        <label>View Mode:</label>
+                        <button class="viz-btn active" data-mode="temperature">Temperature</button>
+                        <button class="viz-btn" data-mode="stress">Stress</button>
+                        <button class="viz-btn" data-mode="material">Material</button>
+                    </div>
+                    <div class="viz-group">
+                        <label>Slice Z:</label>
+                        <input type="range" id="slice-z" min="0" max="100" value="100">
+                        <span id="slice-z-val">All</span>
+                    </div>
+                    <div class="viz-group">
+                        <label>Opacity:</label>
+                        <input type="range" id="opacity" min="10" max="100" value="80">
+                    </div>
+                    <div class="viz-group">
+                        <label>
+                            <input type="checkbox" id="show-wireframe"> Wireframe
+                        </label>
+                        <label>
+                            <input type="checkbox" id="show-critical" checked> Critical Points
+                        </label>
+                    </div>
+                </div>
+                <!-- Color Legend -->
+                <div id="color-legend">
+                    <div class="legend-title" id="legend-title">Temperature (K)</div>
+                    <div class="legend-gradient" id="legend-gradient"></div>
+                    <div class="legend-labels">
+                        <span id="legend-min">298</span>
+                        <span id="legend-max">400</span>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Right Panel: Results -->
+            <aside id="results-panel">
+                <section class="panel-section">
+                    <h3>Results</h3>
+                    <div class="result-item">
+                        <span class="result-label">Max Temperature</span>
+                        <span class="result-value" id="res-max-temp">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Min Temperature</span>
+                        <span class="result-value" id="res-min-temp">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Max Stress</span>
+                        <span class="result-value" id="res-max-stress">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Critical Regions</span>
+                        <span class="result-value" id="res-critical">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Convergence</span>
+                        <span class="result-value" id="res-convergence">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Step</span>
+                        <span class="result-value" id="res-step">--</span>
+                    </div>
+                    <div class="result-item">
+                        <span class="result-label">Elapsed Time</span>
+                        <span class="result-value" id="res-elapsed">--</span>
+                    </div>
+                </section>
+
+                <!-- Stack Info -->
+                <section class="panel-section">
+                    <h3>3D-IC Stack</h3>
+                    <div id="stack-info"></div>
+                </section>
+
+                <!-- Materials -->
+                <section class="panel-section">
+                    <h3>Materials</h3>
+                    <div id="materials-info"></div>
+                </section>
+
+                <!-- Failure Risk -->
+                <section class="panel-section" id="failure-section" style="display:none;">
+                    <h3>Failure Risk Assessment</h3>
+                    <div id="failure-info"></div>
+                </section>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Three.js from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <!-- Application Scripts -->
+    <script src="js/materials.js"></script>
+    <script src="js/simulation.js"></script>
+    <script src="js/visualization.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
