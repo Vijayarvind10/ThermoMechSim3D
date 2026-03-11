@@ -1,0 +1,515 @@
+/* ThermoMechSim3D Web Application Styles */
+:root {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --border-color: #30363d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --accent-blue: #58a6ff;
+    --accent-green: #3fb950;
+    --accent-red: #f85149;
+    --accent-orange: #d29922;
+    --accent-purple: #bc8cff;
+    --panel-width: 280px;
+    --header-height: 50px;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Header */
+#header {
+    height: var(--header-height);
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    flex-shrink: 0;
+}
+
+.header-left {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+}
+
+.header-left h1 {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--accent-blue);
+}
+
+.subtitle {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.status-badge {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-weight: 500;
+}
+
+.status-idle { background: var(--bg-tertiary); color: var(--text-secondary); }
+.status-running { background: #0d419d; color: var(--accent-blue); animation: pulse 1.5s ease-in-out infinite; }
+.status-done { background: #0f5132; color: var(--accent-green); }
+.status-error { background: #67060c; color: var(--accent-red); }
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
+
+/* Main Layout */
+#main-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* Panels */
+#control-panel, #results-panel {
+    width: var(--panel-width);
+    background: var(--bg-secondary);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+#results-panel {
+    border-right: none;
+    border-left: 1px solid var(--border-color);
+}
+
+.panel-section {
+    padding: 12px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.panel-section h3 {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 10px;
+}
+
+.panel-section label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin-bottom: 4px;
+    margin-top: 8px;
+}
+
+.panel-section label:first-of-type {
+    margin-top: 0;
+}
+
+.panel-section select,
+.panel-section input[type="number"] {
+    width: 100%;
+    padding: 6px 8px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 13px;
+}
+
+.panel-section select:focus,
+.panel-section input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent-blue);
+}
+
+.panel-section input[type="range"] {
+    width: calc(100% - 40px);
+    vertical-align: middle;
+    accent-color: var(--accent-blue);
+}
+
+.range-value {
+    display: inline-block;
+    width: 35px;
+    text-align: right;
+    font-size: 12px;
+    color: var(--accent-blue);
+    font-weight: 500;
+}
+
+/* Buttons */
+.controls-section {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 70px;
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.btn-primary {
+    background: #238636;
+    color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    background: #2ea043;
+}
+
+.btn-danger {
+    background: #da3633;
+    color: #fff;
+}
+
+.btn-danger:hover:not(:disabled) {
+    background: #f85149;
+}
+
+.btn-secondary {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #30363d;
+}
+
+/* Progress Bar */
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-tertiary);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 6px;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+    border-radius: 3px;
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.progress-text {
+    font-size: 12px;
+    color: var(--accent-blue);
+    text-align: center;
+    font-weight: 500;
+}
+
+.progress-detail {
+    font-size: 11px;
+    color: var(--text-muted);
+    text-align: center;
+    margin-top: 4px;
+}
+
+/* Viewport */
+#viewport-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+}
+
+#viewport {
+    flex: 1;
+    position: relative;
+}
+
+#render-canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+/* Visualization Controls */
+#viz-controls {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    z-index: 10;
+}
+
+.viz-group {
+    background: rgba(22, 27, 34, 0.9);
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12px;
+}
+
+.viz-group label {
+    color: var(--text-secondary);
+    white-space: nowrap;
+    font-size: 12px;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.viz-btn {
+    padding: 4px 10px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-secondary);
+    font-size: 11px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.viz-btn:hover {
+    background: var(--border-color);
+    color: var(--text-primary);
+}
+
+.viz-btn.active {
+    background: var(--accent-blue);
+    color: #fff;
+    border-color: var(--accent-blue);
+}
+
+.viz-group input[type="range"] {
+    width: 100px;
+    accent-color: var(--accent-blue);
+}
+
+.viz-group input[type="checkbox"] {
+    accent-color: var(--accent-blue);
+}
+
+/* Color Legend */
+#color-legend {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 30px;
+    z-index: 10;
+    text-align: center;
+}
+
+.legend-title {
+    font-size: 11px;
+    color: var(--text-secondary);
+    margin-bottom: 6px;
+    writing-mode: vertical-rl;
+    text-orientation: mixed;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    position: absolute;
+    right: 36px;
+    top: 50%;
+    transform: translateY(-50%) rotate(180deg);
+}
+
+.legend-gradient {
+    width: 20px;
+    height: 200px;
+    border-radius: 3px;
+    border: 1px solid var(--border-color);
+    margin: 0 auto;
+    background: linear-gradient(to top,
+        #0000ff,
+        #00ffff,
+        #00ff00,
+        #ffff00,
+        #ff0000
+    );
+}
+
+.legend-labels {
+    display: flex;
+    flex-direction: column-reverse;
+    justify-content: space-between;
+    height: 200px;
+    position: absolute;
+    right: 32px;
+    top: 0;
+}
+
+.legend-labels span {
+    font-size: 10px;
+    color: var(--text-secondary);
+}
+
+/* Results */
+.result-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.result-item:last-child {
+    border-bottom: none;
+}
+
+.result-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.result-value {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+/* Stack & Materials Info */
+.stack-layer {
+    display: flex;
+    align-items: center;
+    padding: 4px 0;
+    font-size: 12px;
+    gap: 8px;
+}
+
+.layer-color {
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    border: 1px solid var(--border-color);
+    flex-shrink: 0;
+}
+
+.layer-name {
+    color: var(--text-primary);
+    flex: 1;
+}
+
+.layer-detail {
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.material-item {
+    padding: 4px 0;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.material-name {
+    color: var(--accent-blue);
+    font-weight: 500;
+}
+
+.material-prop {
+    font-size: 11px;
+    color: var(--text-muted);
+}
+
+/* Failure Risk */
+.risk-item {
+    padding: 6px 0;
+    border-bottom: 1px solid var(--bg-tertiary);
+}
+
+.risk-label {
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.risk-value {
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.risk-ok { color: var(--accent-green); }
+.risk-warn { color: var(--accent-orange); }
+.risk-critical { color: var(--accent-red); }
+
+/* Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Responsive */
+@media (max-width: 1200px) {
+    :root {
+        --panel-width: 240px;
+    }
+}
+
+@media (max-width: 900px) {
+    #main-layout {
+        flex-direction: column;
+    }
+
+    #control-panel, #results-panel {
+        width: 100%;
+        max-height: 200px;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+    }
+
+    #results-panel {
+        border-left: none;
+        border-top: 1px solid var(--border-color);
+    }
+}
